@@ -1,12 +1,14 @@
 # Structure and content description
 
-| Folder        | Subfolders    | Description  |
-| ------------- |:-------------:| -------------------------|
-| DML           | - | SELECT, UPDATE, INSERT, DELETE, MERGE |
-| DDL           | -  | CREATE, ALTER, DROP. RENAME, TRUNCATE, COMMENT |
-| DCL | - | GRANT, REVOKE |
-| TCL | - | COMMIT, ROLLBACK, SAVEPOINT |
-| DBM | Console | Database management codes |
+| Folder        | Subfolders | Description  |
+| ------------- |:-------:| -------------------------|
+| DML           | -       | SELECT, UPDATE, INSERT, DELETE, MERGE |
+| DDL           | -       | CREATE, ALTER, DROP. RENAME, TRUNCATE, COMMENT |
+| DCL           | -       | GRANT, REVOKE |
+| TCL           | -       | COMMIT, ROLLBACK, SAVEPOINT |
+| DBM           | Console | Database management codes |
+| FUNC          | -       | Functions and anonymous blocks |
+
 
 # Definitions
 
