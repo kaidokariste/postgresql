@@ -11,6 +11,9 @@
 
 
 # Definitions
+**User** - A database user is a person who can log on to the database.
+
+**Schema** - A database schema is all the objects in the database owned by one user.
 
 **Data Manipulation Language (DML)** -used for selecting, inserting, deleting and updating data in a database
 
