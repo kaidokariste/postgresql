@@ -1,6 +1,4 @@
-# Data Warehouse Beginners course
-
-## Study Drills
+# Study Drills
 
 ### Exercise 1 - Character types
 1. Above each line write out in English what that line does.
