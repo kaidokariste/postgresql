@@ -79,7 +79,7 @@ WHERE 18 = ANY (integer_array_one_dim); -- serches from array where any element 
 
 SELECT *
 FROM "kaido.kariste".my_array_table
-WHERE 18 = ALL (integer_array_one_dim); -- serches from array where all elements = 18
+WHERE 18 = ALL (integer_array_one_dim); -- search from array where all elements = 18
 
 SELECT *
 FROM "kaido.kariste".my_array_table
