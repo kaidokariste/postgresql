@@ -36,3 +36,11 @@ FROM pg_description
  JOIN pg_attribute t1 ON t1.attrelid = pg_description.objoid AND pg_description.objsubid = t1.attnum
  JOIN pg_class ON pg_class.oid = t1.attrelid;
 ```
+
+## Look column data type and parameters
+````sql
+SELECT *
+FROM information_schema.columns
+WHERE table_name = 'my_table';
+````
+
