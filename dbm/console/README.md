@@ -25,3 +25,14 @@ In some cases we need to execute sql file directly in command line. For such cas
 SELECT pg_cancel_backend(<pid>) -- Tries to cancel first the process
 SELECT pg_terminate_backend(<pid>); -- Terminate
 ```
+## Look column description of a table
+
+```sql
+SELECT
+ relname as table,
+ attname as column,
+ description
+FROM pg_description
+ JOIN pg_attribute t1 ON t1.attrelid = pg_description.objoid AND pg_description.objsubid = t1.attnum
+ JOIN pg_class ON pg_class.oid = t1.attrelid;
+```
