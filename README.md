@@ -22,3 +22,5 @@
 **Data Control Language (DCL)** - used to control access to data stored in a database.
 
 **Transaction Control Language (TCL)** - used to control transaction behaviour in database.
+
+**Index** - schema object that contains an entry for each value that appears in the indexed column(s) of the table or cluster and provides direct, fast access to rows.
