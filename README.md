@@ -6,7 +6,7 @@
 | DDL           | -       | CREATE, ALTER, DROP. RENAME, TRUNCATE, COMMENT |
 | DCL           | -       | GRANT, REVOKE |
 | TCL           | -       | COMMIT, ROLLBACK, SAVEPOINT |
-| DBM           | Console | Database management codes |
+| DBM           | -       | Database management codes |
 | FUNC          | -       | Functions and anonymous blocks |
 
 

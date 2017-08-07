@@ -35,12 +35,24 @@ SELECT
 FROM pg_description
  JOIN pg_attribute t1 ON t1.attrelid = pg_description.objoid AND pg_description.objsubid = t1.attnum
  JOIN pg_class ON pg_class.oid = t1.attrelid;
+ ```
+ 
+ ## Look function description and code
+```sql
+SELECT
+  r0.OID,
+  proname,
+  description,
+  prosrc
+FROM pg_proc r0
+  LEFT JOIN pg_description r1 ON r1.objoid = r0.oid
+WHERE proname = 'my_function'
+ORDER BY proname;
 ```
 
 ## Look column data type and parameters
-````sql
+```sql
 SELECT *
 FROM information_schema.columns
 WHERE table_name = 'my_table';
-````
-
+```
