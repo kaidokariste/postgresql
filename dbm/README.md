@@ -36,7 +36,7 @@ FROM pg_description
  JOIN pg_attribute t1 ON t1.attrelid = pg_description.objoid AND pg_description.objsubid = t1.attnum
  JOIN pg_class ON pg_class.oid = t1.attrelid;
  ```
- 
+
  ## Look function description and code
 ```sql
 SELECT
@@ -55,4 +55,50 @@ ORDER BY proname;
 SELECT *
 FROM information_schema.columns
 WHERE table_name = 'my_table';
+```
+
+## Look user groups and roles
+```sql
+SELECT
+  r.rolname,
+  r.rolsuper,
+  r.rolinherit,
+  r.rolcreaterole,
+  r.rolcreatedb,
+  r.rolcanlogin,
+  r.rolconnlimit,
+  r.rolvaliduntil,
+  ARRAY(SELECT b.rolname
+        FROM pg_catalog.pg_auth_members m
+          JOIN pg_catalog.pg_roles b ON (m.roleid = b.oid)
+        WHERE m.member = r.oid)                    AS memberof,
+  pg_catalog.shobj_description(r.oid, 'pg_authid') AS description,
+  r.rolreplication,
+  r.rolbypassrls
+FROM pg_catalog.pg_roles r
+WHERE r.rolname !~ '^pg_'
+ORDER BY 1;
+```
+
+## Creating and maintaining user
+Remove certain role from a user
+```sql
+REVOKE myRole FROM myUser
+```
+
+```sql
+DROP OWNED BY myUser
+```
+
+```sql
+ALTER USER myUser NO LOGIN
+```
+
+```sql
+GRANT myRole TO myUser
+```
+
+Create new user with login option
+```sql
+CREATE USER myUser WITH LOGIN
 ```
