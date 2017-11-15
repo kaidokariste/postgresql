@@ -20,6 +20,53 @@ In some cases we need to execute sql file directly in command line. For such cas
 
 - If the file is somewhere else, then you have to insert full path ```C:\Program Files\pgAdmin III\1.22> .\psql.exe -U myusername -d mydatabase -h myserver -f "C:\Users\my.user\Documents\hello_terminal.sql" ```
 
+## Show active processes
+```sql
+SELECT
+  client_port,
+  datid,
+  datname,
+  pid,
+  usesysid,
+  usename,
+  application_name,
+  client_addr,
+  client_hostname,
+  state,
+  query
+FROM pg_stat_activity
+WHERE state = 'active';
+```
+
+## Show conflict locks
+```sql
+SELECT blocked_locks.pid     AS blocked_pid,
+         blocked_activity.usename  AS blocked_user,
+         blocking_locks.pid     AS blocking_pid,
+         blocking_activity.usename AS blocking_user,
+         blocked_activity.query    AS blocked_statement,
+         blocking_activity.query   AS current_statement_in_blocking_process,
+         blocked_activity.application_name AS blocked_application,
+         blocking_activity.application_name AS blocking_application
+   FROM  pg_catalog.pg_locks         blocked_locks
+    JOIN pg_catalog.pg_stat_activity blocked_activity  ON blocked_activity.pid = blocked_locks.pid
+    JOIN pg_catalog.pg_locks         blocking_locks
+        ON blocking_locks.locktype = blocked_locks.locktype
+        AND blocking_locks.DATABASE IS NOT DISTINCT FROM blocked_locks.DATABASE
+        AND blocking_locks.relation IS NOT DISTINCT FROM blocked_locks.relation
+        AND blocking_locks.page IS NOT DISTINCT FROM blocked_locks.page
+        AND blocking_locks.tuple IS NOT DISTINCT FROM blocked_locks.tuple
+        AND blocking_locks.virtualxid IS NOT DISTINCT FROM blocked_locks.virtualxid
+        AND blocking_locks.transactionid IS NOT DISTINCT FROM blocked_locks.transactionid
+        AND blocking_locks.classid IS NOT DISTINCT FROM blocked_locks.classid
+        AND blocking_locks.objid IS NOT DISTINCT FROM blocked_locks.objid
+        AND blocking_locks.objsubid IS NOT DISTINCT FROM blocked_locks.objsubid
+        AND blocking_locks.pid != blocked_locks.pid
+     JOIN pg_catalog.pg_stat_activity blocking_activity ON blocking_activity.pid = blocking_locks.pid
+   WHERE NOT blocked_locks.GRANTED;
+```
+
+
 ## Kill stuck process
 ```sql
 SELECT pg_cancel_backend(<pid>) -- Tries to cancel first the process
@@ -101,4 +148,9 @@ GRANT myRole TO myUser
 Create new user with login option
 ```sql
 CREATE USER myUser WITH LOGIN
+```
+
+Create schema for a user
+```sql
+CREATE SCHEMA "my.username"  AUTHORIZATION "my.surname";
 ```
