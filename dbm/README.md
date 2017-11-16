@@ -72,6 +72,14 @@ SELECT blocked_locks.pid     AS blocked_pid,
 SELECT pg_cancel_backend(<pid>) -- Tries to cancel first the process
 SELECT pg_terminate_backend(<pid>); -- Terminate
 ```
+
+## Lookup of some specific table (currently foreign table)
+```sql
+SELECT *
+FROM information_schema.tables
+WHERE table_type = 'FOREIGN TABLE'
+```
+
 ## Look column description of a table
 
 ```sql
