@@ -16,3 +16,8 @@ CREATE TABLE IF NOT EXISTS schema_name.table_name (
 -- Add comments to table and column
 COMMENT ON TABLE schema_name.table_name IS 'This table is in schema schema_name and called table_name';
 COMMENT ON COLUMN schema_name.table_name.some_id IS 'This is autoincremental number and primary key';
+
+-- Create empty table but with parent table constraints or comments or indexes (if needed).
+-- No inheritance is passed in this case
+
+CREATE TABLE myschema.mytable (LIKE schema_name.parent_table_name INCLUDING COMMENTS);
