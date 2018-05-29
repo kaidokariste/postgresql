@@ -189,7 +189,7 @@ Create schema for a user
 CREATE SCHEMA "my.username"  AUTHORIZATION "my.surname";
 ```
 
-#Optimization
+# Optimization
 
 You can use the **EXPLAIN** command to see what query plan the planner creates for any query. Plan-reading is an art that 
 requires some experience to master, but this section attempts to cover the basics.
@@ -243,7 +243,7 @@ EXPLAIN ANALYZE SELECT * FROM customer;
 ```
 The result would be
 ```
-Seq Scan on dm_party  (cost=0.00..137165.23 rows=2200423 width=1599) (actual time=0.011..2168.645 rows=2204137 loops=1)
+Seq Scan on customer  (cost=0.00..137165.23 rows=2200423 width=1599) (actual time=0.011..2168.645 rows=2204137 loops=1)
 Planning time: 0.151 ms
 Execution time: 2245.405 ms
 ```
