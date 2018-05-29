@@ -6,7 +6,6 @@
 | DDL           | -       | CREATE, ALTER, DROP. RENAME, TRUNCATE, COMMENT |
 | DCL           | -       | GRANT, REVOKE |
 | TCL           | -       | COMMIT, ROLLBACK, SAVEPOINT |
-| DBM           | -       | Database management codes |
 | FUNC          | -       | Functions and anonymous blocks |
 
 
@@ -24,3 +23,229 @@
 **Transaction Control Language (TCL)** - used to control transaction behaviour in database.
 
 **Index** - schema object that contains an entry for each value that appears in the indexed column(s) of the table or cluster and provides direct, fast access to rows.
+
+## Connecting to database
+1. Open Power Shell terminal
+2. Using CD command go to folder where psql.exe is istalled. For example: ```cd C:\Program Files\pgAdmin III\1.22>``` To get help ```.\psql.exe --help```
+3. Connect database: ```.\psql.exe -U myusername -d mydatabase -h mydbserver```
+
+## Looking database parameters
+
+Look database version
+```sql
+SELECT version(); --Database version
+SELECT pg_postmaster_start_time(); --Server starttime
+SELECT * FROM pg_stat_activity; -- Users activity statistics
+```
+
+## Executing file trough commandline
+
+In some cases we need to execute sql file directly in command line. For such cases you need  program called ```psql``` that for Windows machines is available trough pgAdmin III client.
+
+- If the file you want to execute is in the same folder, then the syntax in Windows is: ``` C:\Program Files\pgAdmin III\1.22> .\psql.exe -U "my.username" -d mydatabase -h myserver -f hello_terminal.sql ```
+
+- If the file is somewhere else, then you have to insert full path ```C:\Program Files\pgAdmin III\1.22> .\psql.exe -U myusername -d mydatabase -h myserver -f "C:\Users\my.user\Documents\hello_terminal.sql" ```
+
+## Show active processes
+```sql
+SELECT
+  client_port,
+  datid,
+  datname,
+  pid,
+  usesysid,
+  usename,
+  application_name,
+  client_addr,
+  client_hostname,
+  state,
+  query
+FROM pg_stat_activity
+WHERE state = 'active';
+```
+
+## Show conflict locks
+```sql
+SELECT blocked_locks.pid     AS blocked_pid,
+         blocked_activity.usename  AS blocked_user,
+         blocking_locks.pid     AS blocking_pid,
+         blocking_activity.usename AS blocking_user,
+         blocked_activity.query    AS blocked_statement,
+         blocking_activity.query   AS current_statement_in_blocking_process,
+         blocked_activity.application_name AS blocked_application,
+         blocking_activity.application_name AS blocking_application
+   FROM  pg_catalog.pg_locks         blocked_locks
+    JOIN pg_catalog.pg_stat_activity blocked_activity  ON blocked_activity.pid = blocked_locks.pid
+    JOIN pg_catalog.pg_locks         blocking_locks
+        ON blocking_locks.locktype = blocked_locks.locktype
+        AND blocking_locks.DATABASE IS NOT DISTINCT FROM blocked_locks.DATABASE
+        AND blocking_locks.relation IS NOT DISTINCT FROM blocked_locks.relation
+        AND blocking_locks.page IS NOT DISTINCT FROM blocked_locks.page
+        AND blocking_locks.tuple IS NOT DISTINCT FROM blocked_locks.tuple
+        AND blocking_locks.virtualxid IS NOT DISTINCT FROM blocked_locks.virtualxid
+        AND blocking_locks.transactionid IS NOT DISTINCT FROM blocked_locks.transactionid
+        AND blocking_locks.classid IS NOT DISTINCT FROM blocked_locks.classid
+        AND blocking_locks.objid IS NOT DISTINCT FROM blocked_locks.objid
+        AND blocking_locks.objsubid IS NOT DISTINCT FROM blocked_locks.objsubid
+        AND blocking_locks.pid != blocked_locks.pid
+     JOIN pg_catalog.pg_stat_activity blocking_activity ON blocking_activity.pid = blocking_locks.pid
+   WHERE NOT blocked_locks.GRANTED;
+```
+
+
+## Kill stuck process
+```sql
+SELECT pg_cancel_backend(<pid>) -- Tries to cancel first the process
+SELECT pg_terminate_backend(<pid>); -- Terminate
+```
+
+## Lookup of some specific table (currently foreign table)
+```sql
+SELECT *
+FROM information_schema.tables
+WHERE table_type = 'FOREIGN TABLE'
+```
+
+## Look column description of a table
+
+```sql
+SELECT
+ relname as table,
+ attname as column,
+ description
+FROM pg_description
+ JOIN pg_attribute t1 ON t1.attrelid = pg_description.objoid AND pg_description.objsubid = t1.attnum
+ JOIN pg_class ON pg_class.oid = t1.attrelid;
+ ```
+
+ ## Look function description and code
+```sql
+SELECT
+  r0.OID,
+  proname,
+  description,
+  prosrc
+FROM pg_proc r0
+  LEFT JOIN pg_description r1 ON r1.objoid = r0.oid
+WHERE proname = 'my_function'
+ORDER BY proname;
+```
+
+## Look column data type and parameters
+```sql
+SELECT *
+FROM information_schema.columns
+WHERE table_name = 'my_table';
+```
+
+## Look user groups and roles
+```sql
+SELECT
+  r.rolname,
+  r.rolsuper,
+  r.rolinherit,
+  r.rolcreaterole,
+  r.rolcreatedb,
+  r.rolcanlogin,
+  r.rolconnlimit,
+  r.rolvaliduntil,
+  ARRAY(SELECT b.rolname
+        FROM pg_catalog.pg_auth_members m
+          JOIN pg_catalog.pg_roles b ON (m.roleid = b.oid)
+        WHERE m.member = r.oid)                    AS memberof,
+  pg_catalog.shobj_description(r.oid, 'pg_authid') AS description,
+  r.rolreplication,
+  r.rolbypassrls
+FROM pg_catalog.pg_roles r
+WHERE r.rolname !~ '^pg_'
+ORDER BY 1;
+```
+
+## Creating and maintaining user
+Remove certain role from a user
+```sql
+REVOKE myRole FROM myUser
+```
+
+```sql
+DROP OWNED BY myUser
+```
+
+```sql
+ALTER USER myUser NO LOGIN
+```
+
+```sql
+GRANT myRole TO myUser
+```
+
+Create new user with login option
+```sql
+CREATE USER myUser WITH LOGIN
+```
+
+Create schema for a user
+```sql
+CREATE SCHEMA "my.username"  AUTHORIZATION "my.surname";
+```
+
+#Optimization
+
+You can use the **EXPLAIN** command to see what query plan the planner creates for any query. Plan-reading is an art that 
+requires some experience to master, but this section attempts to cover the basics.
+
+For the sake of demo, let's execute simplest query we can think
+```sql
+EXPLAIN SELECT 1;
+```
+The result would be
+```
+Result  (cost=0.00..0.01 rows=1 width=4)
+```
+The numbers that are quoted in parentheses are (left to right):
+- ***Estimated start-up cost*** - This is the time expended before the output phase can begin, e.g., time to do the sorting in a sort node.
+- ***Estimated total cost*** - This is stated on the assumption that the plan node is run to completion, i.e., all available rows are retrieved. In practice a node's parent node might stop short of reading all available rows (see the LIMIT example below).
+- ***Estimated number of rows output by this plan node*** Again, the node is assumed to be run to completion.
+- ***Estimated average width of rows*** output by this plan node (in bytes).
+Often cost is thought as milliseconds. *The costs are measured in arbitrary units determined by the planner's cost parameters.*
+You can take this query as base that basically doesn't cost anything to computer.
+Now, let's query something from a table.
+```sql
+EXPLAIN SELECT * FROM customer;
+```
+The result is 
+```
+Seq Scan on customer  (cost=0.00..137165.23 rows=2200423 width=1599)
+```
+Since this query has no WHERE clause, it must scan all the rows of the table, so the planner has chosen to use a simple sequential scan plan. 
+
+***[Full Table Scan](https://en.wikipedia.org/wiki/Full_table_scan)*** (also known as ***Sequential Scan***) is a scan made on a database where each row of the table under scan is read in a sequential (serial) order and the columns encountered are checked for the validity of a condition. 
+Full table scans are usually the slowest method of scanning a table due to the heavy amount of I/O reads required from the disk which consists of multiple seeks as well as costly disk to memory transfers.
+
+**Pros:**
+- The cost is constant, as every time database system needs to scan full table row by row.
+- When table is less than 2 percent of database block buffer, the full scan table is quicker.
+
+**Cons:**
+- Full table scan occurs when there is no index or index is not being used by SQL. And the result of full scan table is usually slower that index table scan. The situation is that: the larger the table, the slower of the data returns.
+- Unnecessary full-table scan will lead to a huge amount of unnecessary I/O with a process burden on the entire database.
+
+Total cost is calculated as:
+```
+SELECT relpages, reltuples FROM pg_class WHERE relname = 'customer';
+```
+According to this *customer* has 115161 disk pages and 2200423 rows (*tuples*). By default *seq_page_cost* is 1.0 and 
+*cpu_tuple_cost* 0.1, so estimated cost is (115161x1,0)+(2200423x0,01) = 137165.23
+
+To analyze time, we should use key word ANALYZE
+```sql
+EXPLAIN ANALYZE SELECT * FROM customer;
+```
+The result would be
+```
+Seq Scan on dm_party  (cost=0.00..137165.23 rows=2200423 width=1599) (actual time=0.011..2168.645 rows=2204137 loops=1)
+Planning time: 0.151 ms
+Execution time: 2245.405 ms
+```
+Total expected time would be 2.2 seconds
+ 
