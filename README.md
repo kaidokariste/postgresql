@@ -248,4 +248,24 @@ Planning time: 0.151 ms
 Execution time: 2245.405 ms
 ```
 Total expected time would be 2.2 seconds
- 
+
+## Terms we may see in queryplanner
+### Join Operations
+Generally join operations process only two tables at a time. In case a query has more joins, they are executed sequentially: first two tables, then the intermediate result with the next table. In the context of joins, the term “table” could therefore also mean “intermediate result”.
+
+**Nested Loops**
+Joins two tables by fetching the result from one table and querying the other table for each row from the first. 
+
+**[Hash Join / Hash](https://use-the-index-luke.com/sql/join/hash-join-partial-objects)**
+The hash join loads the candidate records from one side of the join into a hash table (marked with Hash in the plan) which is then probed for each record from the other side of the join.
+
+**[Merge Join](https://use-the-index-luke.com/sql/join/sort-merge-join)**
+The (sort) merge join combines two sorted lists like a zipper. Both sides of the join must be presorted. 
+
+## Index and table access
+**Seq Scan**
+The Seq Scan operation scans the entire relation (table) as stored on disk (like TABLE ACCESS FULL).
+
+**Bitmap Index Scan / Bitmap Heap Scan / Recheck Cond**
+
+A plain Index Scan fetches one tuple-pointer at a time from the index, and immediately visits that tuple in the table. A bitmap scan fetches all the tuple-pointers from the index in one go, sorts them using an in-memory "bitmap" data structure, and then visits the table tuples in physical tuple-location order.
