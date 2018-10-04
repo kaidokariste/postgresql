@@ -175,6 +175,7 @@ DROP OWNED BY myUser
 ALTER USER myUser NO LOGIN
 ```
 
+Grant some specific role to a user
 ```sql
 GRANT myRole TO myUser
 ```
@@ -187,6 +188,16 @@ CREATE USER myUser WITH LOGIN
 Create schema for a user
 ```sql
 CREATE SCHEMA "my.username"  AUTHORIZATION "my.surname";
+```
+
+Grant usage for a schema. This grants rights to see tables under that schema.
+```sql
+GRANT USAGE ON SCHEMA someSchema TO myUser;
+```
+
+Grant select on all tables
+```sql
+GRANT SELECT ON ALL TABLES IN SCHEMA mySchema TO myRole/myUser ;
 ```
 
 # Optimization
