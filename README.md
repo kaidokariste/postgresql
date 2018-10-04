@@ -167,8 +167,10 @@ Remove certain role from a user
 REVOKE myRole FROM myUser
 ```
 
+Removing user from database
 ```sql
-DROP OWNED BY myUser
+DROP OWNED BY myUser;
+DROP USER myUser;
 ```
 
 ```sql
