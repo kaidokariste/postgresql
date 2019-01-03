@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS schema_name.table_name (
   some_one_dim_int_array INTEGER [],
   some_two_dim_int_array TEXT [] [],
   is_valid_default_true  BOOLEAN                     DEFAULT TRUE,
+  inserted_by            VARCHAR                     DEFAULT "current_user"(),
   valid_from_default_now TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
   valid_to               TIMESTAMP WITHOUT TIME ZONE,
   PRIMARY KEY (some_id),
