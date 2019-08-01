@@ -106,6 +106,15 @@ FROM information_schema.tables
 WHERE table_type = 'FOREIGN TABLE'
 ```
 
+## Lookup of specific column
+```sql
+SELECT c.relname, a.attname
+FROM pg_class AS c
+INNER JOIN pg_attribute AS a ON a.attrelid = c.oid
+WHERE a.attname LIKE 'myColumnThatIsearch'
+AND c.relkind = 'r';
+```
+
 ## Lookup size of table
 ```sql
 SELECT nspname || '.' || relname               AS "relation",
