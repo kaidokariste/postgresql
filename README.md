@@ -92,7 +92,6 @@ SELECT blocked_locks.pid     AS blocked_pid,
    WHERE NOT blocked_locks.GRANTED;
 ```
 
-
 ## Kill stuck process
 ```sql
 SELECT pg_cancel_backend(<pid>) -- Tries to cancel first the process
@@ -156,6 +155,12 @@ ORDER BY proname;
 SELECT *
 FROM information_schema.columns
 WHERE table_name = 'my_table';
+```
+
+## Change timezone
+```sql
+SHOW TIMEZONE;
+SET TIME ZONE 'Europe/Tallinn';
 ```
 
 ## Look user groups and roles
