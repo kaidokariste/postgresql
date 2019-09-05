@@ -46,6 +46,19 @@ In some cases we need to execute sql file directly in command line. For such cas
 
 - If the file is somewhere else, then you have to insert full path ```C:\Program Files\pgAdmin III\1.22> .\psql.exe -U myusername -d mydatabase -h myserver -f "C:\Users\my.user\Documents\hello_terminal.sql" ```
 
+## Investigate postgres log files
+
+Log into the server where postgres is running
+
+**Get the latest log filename**
+```
+sudo ls -lah /var/lib/postgresql/9.6/main/pg_log
+```
+**last 200 raws from the latest log**
+```
+sudo tail -n 200 /var/lib/postgresql/9.6/main/pg_log/postgresql-2018-08-14_000000.log 
+```
+
 ## Show active processes
 ```sql
 SELECT
