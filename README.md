@@ -24,6 +24,29 @@
 
 **Index** - schema object that contains an entry for each value that appears in the indexed column(s) of the table or cluster and provides direct, fast access to rows.
 
+# Handling Postgres logs
+
+Log into the server where postgres is running
+
+**Get the latest log filename**
+```
+sudo ls -lah /var/lib/postgresql/9.6/main/pg_log
+```
+**Get last 200 rows from the latest log**
+-n - number of rows at the end
+-f - "follow", continues to add lines into printout
+```
+sudo tail -n 200 /var/lib/postgresql/9.6/main/pg_log/postgresql-2018-08-14_000000.log 
+sudo tail -f 100 /var/lib/postgresql/9.6/main/pg_log/postgresql-2019-09-06_000000.log
+```
+
+**Search specific words from postgres file**
+```
+sudo grep 'starting\|finished' /var/lib/postgresql/9.6/main/pg_log/postgresql-2019-09-05_100807.log
+```
+**
+
+# Database handling
 ## Connecting to database
 1. Open Power Shell terminal
 2. Using CD command go to folder where psql.exe is istalled. For example: ```cd C:\Program Files\pgAdmin III\1.22>``` To get help ```.\psql.exe --help```
@@ -45,19 +68,6 @@ In some cases we need to execute sql file directly in command line. For such cas
 - If the file you want to execute is in the same folder, then the syntax in Windows is: ``` C:\Program Files\pgAdmin III\1.22> .\psql.exe -U "my.username" -d mydatabase -h myserver -f hello_terminal.sql ```
 
 - If the file is somewhere else, then you have to insert full path ```C:\Program Files\pgAdmin III\1.22> .\psql.exe -U myusername -d mydatabase -h myserver -f "C:\Users\my.user\Documents\hello_terminal.sql" ```
-
-## Investigate postgres log files
-
-Log into the server where postgres is running
-
-**Get the latest log filename**
-```
-sudo ls -lah /var/lib/postgresql/9.6/main/pg_log
-```
-**last 200 raws from the latest log**
-```
-sudo tail -n 200 /var/lib/postgresql/9.6/main/pg_log/postgresql-2018-08-14_000000.log 
-```
 
 ## Show active processes
 ```sql
