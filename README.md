@@ -44,7 +44,6 @@ sudo tail -f 100 /var/lib/postgresql/9.6/main/pg_log/postgresql-2019-09-06_00000
 ```
 sudo grep 'starting\|finished' /var/lib/postgresql/9.6/main/pg_log/postgresql-2019-09-05_100807.log
 ```
-**
 
 # Database handling
 ## Connecting to database
