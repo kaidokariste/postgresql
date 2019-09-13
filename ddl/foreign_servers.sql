@@ -1,4 +1,7 @@
 -- Postgres foreign data wrapper
+-- Check installed extencions
+SELECT * FROM pg_extension;
+
 -- Check out existing foreign servers
 SELECT * FROM pg_foreign_server;
 
