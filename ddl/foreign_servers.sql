@@ -8,9 +8,13 @@ CREATE EXTENSION IF NOT EXISTS postgres_fdw;
 
 -- Create server definition
 DROP SERVER IF EXISTS pam_db CASCADE;
+
 CREATE SERVER pam_db
     FOREIGN DATA WRAPPER postgres_fdw
     OPTIONS ( host 'myHost', dbname 'myDb', port '5432' );
+
+-- Drop also removes the foreign table. If you want to update server definiton then
+ALTER SERVER pam_db OPTIONS (SET address 'new-pamdb-host-address');
 
 DROP USER MAPPING IF EXISTS FOR CURRENT_USER SERVER pam_db;
 CREATE USER MAPPING FOR CURRENT_USER
