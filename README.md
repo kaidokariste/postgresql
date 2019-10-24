@@ -136,6 +136,31 @@ WHERE a.attname LIKE 'myColumnThatIsearch'
 AND c.relkind = 'r';
 ```
 
+## Look up size of database, grouped by schemas
+```sql
+SELECT table_schema,
+     pg_size_pretty(sum(total_bytes)) AS total
+    , pg_size_pretty(sum(index_bytes)) AS INDEX
+    , pg_size_pretty(sum(toast_bytes)) AS toast
+    , pg_size_pretty(sum(table_bytes)) AS TABLE
+  FROM (
+  SELECT *, total_bytes-index_bytes-COALESCE(toast_bytes,0) AS table_bytes FROM (
+      SELECT c.oid,nspname AS table_schema, relname AS TABLE_NAME
+              , c.reltuples AS row_estimate
+              , pg_total_relation_size(c.oid) AS total_bytes
+              , pg_indexes_size(c.oid) AS index_bytes
+              , pg_total_relation_size(reltoastrelid) AS toast_bytes
+          FROM pg_class c
+          LEFT JOIN pg_namespace n ON n.oid = c.relnamespace
+          WHERE relkind = 'r'
+  ) a
+) a
+--where table_schema in ('bdwh','bdwh_part','whstage','audit','backup')
+group by table_schema
+having sum(total_bytes) > 1000000
+order by sum(total_bytes) desc;
+```
+
 ## Lookup size of table
 ```sql
 SELECT nspname || '.' || relname               AS "relation",
