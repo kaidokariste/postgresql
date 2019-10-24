@@ -155,7 +155,7 @@ SELECT table_schema,
           WHERE relkind = 'r'
   ) a
 ) a
---where table_schema in ('bdwh','bdwh_part','whstage','audit','backup')
+where table_schema in ('MySchema')
 group by table_schema
 having sum(total_bytes) > 1000000
 order by sum(total_bytes) desc;
