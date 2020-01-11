@@ -1,5 +1,6 @@
 ﻿/*
  * This anonymos block will generate loan annuity schedule
+ * Tags: while loop, anonymous block 
  */
 
 DO LANGUAGE plpgsql
