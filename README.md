@@ -288,6 +288,12 @@ Grant select on all tables
 GRANT SELECT ON ALL TABLES IN SCHEMA mySchema TO myRole/myUser ;
 ```
 
+Find and modify hba conf file
+```sql
+SHOW hba_file; -- shows path of hba file
+SELECT pg_reload_conf(); -- reload conf file after changes
+```
+
 # Optimization
 
 You can use the **EXPLAIN** command to see what query plan the planner creates for any query. Plan-reading is an art that 
