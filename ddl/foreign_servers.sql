@@ -24,6 +24,13 @@ CREATE USER MAPPING FOR CURRENT_USER
     SERVER pam_db
     OPTIONS (USER :'user', PASSWORD :'password');
 
+-- Look over mappings and servers
+SELECT srvname, um.*,rolname
+  FROM pg_user_mapping um
+  JOIN pg_roles r ON r.oid = umuser
+  JOIN pg_foreign_server fs ON fs.oid = umserver;
+
+
 -- MySQL Foreign data wrapper
 
 -- Prerequsite is that mysql_fdw has been installed in server side
