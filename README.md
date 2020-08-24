@@ -61,7 +61,7 @@ SELECT * FROM pg_stat_activity; -- Users activity statistics
 ```
 
 Find top 20 largest databases in your cluster
-```
+```sql
 SELECT d.datname as Name,  pg_catalog.pg_get_userbyid(d.datdba) as Owner,
     CASE WHEN pg_catalog.has_database_privilege(d.datname, 'CONNECT')
         THEN pg_catalog.pg_size_pretty(pg_catalog.pg_database_size(d.datname))
