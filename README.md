@@ -136,6 +136,14 @@ SELECT pg_cancel_backend(<pid>) -- Tries to cancel first the process
 SELECT pg_terminate_backend(<pid>); -- Terminate
 ```
 
+## Lookup trigger status
+```sql
+SELECT pg_namespace.nspname, pg_class.relname, pg_trigger.tgname, pg_trigger.tgenabled
+FROM pg_trigger
+JOIN pg_class ON pg_trigger.tgrelid = pg_class.oid
+JOIN pg_namespace ON pg_namespace.oid = pg_class.relnamespace;
+```
+
 ## Lookup of some specific table (currently foreign table)
 ```sql
 SELECT *
