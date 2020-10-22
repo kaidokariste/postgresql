@@ -51,6 +51,18 @@ sudo grep 'starting\|finished' /var/lib/postgresql/9.6/main/pg_log/postgresql-20
 2. Using CD command go to folder where psql.exe is istalled. For example: ```cd C:\Program Files\pgAdmin III\1.22>``` To get help ```.\psql.exe --help```
 3. Connect database: ```.\psql.exe -U myusername -d mydatabase -h mydbserver```
 
+## Connect database inside docker container
+```bash
+$ docker run -i -t <docker-image-code> /bin/bash
+$ service postgresql status
+$ service postgresql start
+$ ps aux
+$ su - postgres
+$ psql
+    postgres# \connect MyDatabase
+
+```
+
 ## Looking database parameters
 
 Look database version
