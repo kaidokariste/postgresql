@@ -163,6 +163,14 @@ FROM information_schema.tables
 WHERE table_type = 'FOREIGN TABLE'
 ```
 
+## Foreign server information lookup  
+```sql
+SELECT srvname, srvoptions, um.*,rolname
+  FROM pg_user_mapping um
+  JOIN pg_roles r ON r.oid = umuser
+  JOIN pg_foreign_server fs ON fs.oid = umserver;
+```
+
 ## Lookup of specific column
 ```sql
 SELECT c.relname, a.attname
