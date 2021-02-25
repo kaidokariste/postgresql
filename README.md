@@ -228,6 +228,15 @@ FROM pg_description
  JOIN pg_class ON pg_class.oid = t1.attrelid;
  ```
 
+## Look inheritance of the tables
+```sql
+SELECT c.relname AS child, p.relname AS parent
+FROM
+    pg_inherits JOIN pg_class AS c ON (inhrelid=c.oid)
+    JOIN pg_class as p ON (inhparent=p.oid)
+where p.relname like 'customer%';
+```
+
  ## Look function description and code
 ```sql
 SELECT
