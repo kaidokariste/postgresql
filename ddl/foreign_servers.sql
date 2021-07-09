@@ -1,28 +1,38 @@
+/*
+HOST_SERVER - where the original data is, where we wnat to connect
+MY_SERVER - where we create mapping and connection
+
+1. You need database user in HOST_SERVER database against what you will do the mapping
+*/
+
 -- Postgres foreign data wrapper
--- Check installed extencions
+-- Check installed extencions in HOST_SERVER. It should have extension postgres_fdw
 SELECT * FROM pg_extension;
 
--- Check out existing foreign servers
+-- Check out existing foreign servers in MY_SERVER
 SELECT * FROM pg_foreign_server;
 
 -- Setting up postgres_fdw
 DROP EXTENSION IF EXISTS postgres_fdw CASCADE;
 CREATE EXTENSION IF NOT EXISTS postgres_fdw;
 
--- Create server definition
-DROP SERVER IF EXISTS pam_db CASCADE;
+-- Create server definition in MY_SERVER called "connect_to_host_db"
+DROP SERVER IF EXISTS connect_to_host_db CASCADE;
 
-CREATE SERVER pam_db
+CREATE SERVER connect_to_host_db
     FOREIGN DATA WRAPPER postgres_fdw
-    OPTIONS ( host 'myHost', dbname 'myDb', port '5432' );
+    OPTIONS ( host 'HOST_SERVER_ADDRESS', dbname 'HOST_DB', port '5432' );
 
 -- Drop also removes the foreign table. If you want to update server definiton then
-ALTER SERVER pam_db OPTIONS (SET address 'new-pamdb-host-address');
+ALTER SERVER connect_to_host_db OPTIONS (SET address 'new-pamdb-host-address');
 
-DROP USER MAPPING IF EXISTS FOR CURRENT_USER SERVER pam_db;
-CREATE USER MAPPING FOR CURRENT_USER
-    SERVER pam_db
-    OPTIONS (USER :'user', PASSWORD :'password');
+-- User mapping works so that you map user in MY_SERVER database against created user HOST_SERVER database
+-- https://www.postgresql.org/docs/12/sql-createusermapping.html
+DROP USER MAPPING IF EXISTS FOR {user_name| CURRENT_USER } SERVER connect_to_host_db;
+
+CREATE USER MAPPING FOR {user_name | CURRENT_USER }
+    SERVER connect_to_host_db
+    OPTIONS (USER 'HOST_SERVER_USER', PASSWORD 'password');
 
 -- Look over mappings and servers
 SELECT srvname, um.*,rolname
