@@ -96,6 +96,12 @@ In some cases we need to execute sql file directly in command line. For such cas
 
 - If the file is somewhere else, then you have to insert full path ```C:\Program Files\pgAdmin III\1.22> .\psql.exe -U myusername -d mydatabase -h myserver -f "C:\Users\my.user\Documents\hello_terminal.sql" ```
 
+## Show hba configuration file path
+```sql
+SHOW hba_file;
+SELECT pg_reload_conf();
+```
+
 ## Show active processes
 ```sql
 SELECT
