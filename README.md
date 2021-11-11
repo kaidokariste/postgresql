@@ -248,13 +248,28 @@ FROM pg_description
  JOIN pg_class ON pg_class.oid = t1.attrelid;
  ```
 
-## Look inheritance of the tables
+## Look inheritance and partitions of the tables
 ```sql
 SELECT c.relname AS child, p.relname AS parent
 FROM
     pg_inherits JOIN pg_class AS c ON (inhrelid=c.oid)
     JOIN pg_class as p ON (inhparent=p.oid)
 where p.relname like 'customer%';
+```
+
+```sql
+with recursive inhh(poid, seqn, ordn) as (
+    select cl.oid as poid, 0 as seqn, 0 as ordn
+      from pg_class cl, pg_namespace n
+     where cl.relnamespace = n.oid
+       and n.nspname = '<schemaname>'
+       and cl.relname = '<tablename>'
+     union all
+    SELECT pi.inhrelid, pi.inhseqno, ordn + 1 as orderno
+      FROM pg_inherits pi, inhh where pi.inhparent = inhh.poid
+) SELECT n.nspname, cl.relname, inhh.seqn, inhh.ordn
+    from inhh, pg_class cl, pg_namespace n
+   where cl.oid = inhh.poid and n.oid = cl.relnamespace;
 ```
 
  ## Look function description and code
