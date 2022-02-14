@@ -347,6 +347,12 @@ where relname = 'myView';
 ```
 
 ## Creating and maintaining user
+Create user with password or alter password
+```sql
+CREATE USER <username> WITH ENCRYPTED PASSWORD '<password>';
+ALTER USER <username> WITH encrypted PASSWORD '<password>';
+```
+
 Remove certain role from a user
 ```sql
 REVOKE myRole FROM myUser
@@ -358,6 +364,7 @@ DROP OWNED BY myUser;
 DROP USER myUser;
 ```
 
+Remove login right from user
 ```sql
 ALTER USER myUser NO LOGIN
 ```
