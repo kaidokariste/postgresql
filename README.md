@@ -389,9 +389,10 @@ Grant usage for a schema. This grants rights to see tables under that schema.
 GRANT USAGE ON SCHEMA someSchema TO myUser;
 ```
 
-Grant select on all tables
+Grant select on all tables or reassign ownership
 ```sql
 GRANT SELECT ON ALL TABLES IN SCHEMA mySchema TO myRole/myUser ;
+REASSIGN OWNED BY oldUser TO newUser;
 ```
 
 Find and modify hba conf file
