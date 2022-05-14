@@ -1,7 +1,8 @@
 # Installing PostgreSQL 12 in CentOS 7
 ## References
+[Install CentOS on VirtualBox on Windows Host and Connect from PuTTY](https://medium.com/@jithz/install-centos-on-virtualbox-on-windows-host-and-connect-from-putty-d047afda2788)  
 [How to install PostgreSQL 12 on Centos 7](https://computingforgeeks.com/how-to-install-postgresql-12-on-centos-7/)  
-[How To Install postgresql-plpython on CentOS 7](https://installati.one/centos/7/postgresql-plpython/)
+[Connect to postgresql database in linux virtualbox from Windows](https://stackoverflow.com/questions/18121666/connect-to-postgresql-database-in-linux-virtualbox-from-win7)
 ## Importand paths
 ```java
 /var/lib/pgsql/12/data/pg_hba.conf  
@@ -62,3 +63,52 @@ Restarting when started with system.d
 [dbuser@localhost ~]$ sudo systemctl restart postgresql-12
 ```
 # Installing extensions
+Update yum database  
+```
+sudo yum makecache
+```
+Check the available extension package
+```
+[dbuser@localhost ~]$ sudo yum list available | grep 'plpy'
+[sudo] password for dbuser:
+postgresql10-plpython.x86_64             10.21-1PGDG.rhel7               pgdg10
+postgresql10-plpython3.x86_64            10.21-1PGDG.rhel7               pgdg10
+postgresql11-plpython.x86_64             11.16-1PGDG.rhel7               pgdg11
+postgresql11-plpython3.x86_64            11.16-1PGDG.rhel7               pgdg11
+postgresql12-plpython.x86_64             12.11-1PGDG.rhel7               pgdg12
+postgresql12-plpython3.x86_64            12.11-1PGDG.rhel7               pgdg12
+postgresql13-plpython3.x86_64            13.7-1PGDG.rhel7                pgdg13
+postgresql14-plpython3.x86_64            14.3-1PGDG.rhel7                pgdg14
+```
+Install extension into linux
+```
+[dbuser@localhost ~]$ sudo yum -y install postgresql12-plpython3
+
+```
+Look over if the extension is now available
+```
+postgres=# select * from pg_available_extensions;
+       name        | default_version | installed_version |                  comment
+-------------------+-----------------+-------------------+-------------------------------------------
+ plpgsql           | 1.0             | 1.0               | PL/pgSQL procedural language
+ hstore_plpython3u | 1.0             |                   | transform between hstore and plpython3u
+ jsonb_plpython3u  | 1.0             |                   | transform between jsonb and plpython3u
+ ltree_plpython3u  | 1.0             |                   | transform between ltree and plpython3u
+ plpython3u        | 1.0             |                   | PL/Python3U untrusted procedural language
+(5 rows)
+
+```
+Create extension
+```
+postgres=# create extension plpython3u;
+CREATE EXTENSION
+```
+Check if it is available
+```
+postgres=# select * from pg_extension;
+  oid  |  extname   | extowner | extnamespace | extrelocatable | extversion | extconfig | extcondition
+-------+------------+----------+--------------+----------------+------------+-----------+--------------
+ 14173 | plpgsql    |       10 |           11 | f              | 1.0        |           |
+ 16384 | plpython3u |       10 |           11 | f              | 1.0        |           |
+(2 rows)
+```
