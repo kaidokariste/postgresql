@@ -1,6 +1,7 @@
 # Installing PostgreSQL 12 in CentOS 7
 ## References
 [How to install PostgreSQL 12 on Centos 7](https://computingforgeeks.com/how-to-install-postgresql-12-on-centos-7/)  
+[How To Install postgresql-plpython on CentOS 7](https://installati.one/centos/7/postgresql-plpython/)
 ## Importand paths
 ```java
 /var/lib/pgsql/12/data/pg_hba.conf  
@@ -60,3 +61,4 @@ Restarting when started with system.d
 ```
 [dbuser@localhost ~]$ sudo systemctl restart postgresql-12
 ```
+# Installing extensions
