@@ -2,8 +2,9 @@
 ## References
 [Install CentOS on VirtualBox on Windows Host and Connect from PuTTY](https://medium.com/@jithz/install-centos-on-virtualbox-on-windows-host-and-connect-from-putty-d047afda2788)  
 [How to install PostgreSQL 12 on Centos 7](https://computingforgeeks.com/how-to-install-postgresql-12-on-centos-7/)  
-[Connect to postgresql database in linux virtualbox from Windows](https://stackoverflow.com/questions/18121666/connect-to-postgresql-database-in-linux-virtualbox-from-win7)
-## Importand paths
+[Connect to postgresql database in linux virtualbox from Windows](https://stackoverflow.com/questions/18121666/connect-to-postgresql-database-in-linux-virtualbox-from-win7)  
+[How to stop and disable firewalld on Centos7](https://linuxize.com/post/how-to-stop-and-disable-firewalld-on-centos-7/)
+## Important paths
 ```java
 /var/lib/pgsql/12/data/pg_hba.conf  
 /var/lib/pgsql/12/data/postgresql.conf
@@ -111,4 +112,25 @@ postgres=# select * from pg_extension;
  14173 | plpgsql    |       10 |           11 | f              | 1.0        |           |
  16384 | plpython3u |       10 |           11 | f              | 1.0        |           |
 (2 rows)
+```
+
+# Firewall issues
+There are several tutorials how to connect to your database, that is in loacal VM but it may turn out tricky if the CentOS firewall is there. Here is how to disable it. In references, there is also webpage with longer description
+## Disable temporary
+```
+[root@localhost dbuser]# sudo firewall-cmd --state
+running
+[root@localhost dbuser]# sudo systemctl stop firewalld
+[root@localhost dbuser]# sudo firewall-cmd --state
+not running
+````
+## Disable permanently
+```
+[root@localhost dbuser]# sudo systemctl stop firewalld
+[root@localhost dbuser]# sudo systemctl disable firewalld
+Removed symlink /etc/systemd/system/multi-user.target.wants/firewalld.service.
+Removed symlink /etc/systemd/system/dbus-org.fedoraproject.FirewallD1.service.
+[root@localhost dbuser]# sudo systemctl mask --now firewalld
+Created symlink from /etc/systemd/system/firewalld.service to /dev/null.
+[root@localhost dbuser]#
 ```
