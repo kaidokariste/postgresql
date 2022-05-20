@@ -177,6 +177,8 @@ systemctl enable postgresql-14
 
 **Removing old version if upgrade is successful**
 At this point, you have to test your application. You need to restart your application (GitLab or whatever you use). If everything is working fine, let's continue by removing old packages and files:
+```
 sudo yum remove postgresql11*
 rm -rf /var/lib/pgsql/12
 su - postgres -c "/var/lib/pgsql/delete_old_cluster.sh" 
+```
