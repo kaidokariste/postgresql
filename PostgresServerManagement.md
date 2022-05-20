@@ -4,6 +4,9 @@
 [How to install PostgreSQL 12 on Centos 7](https://computingforgeeks.com/how-to-install-postgresql-12-on-centos-7/)  
 [Connect to postgresql database in linux virtualbox from Windows](https://stackoverflow.com/questions/18121666/connect-to-postgresql-database-in-linux-virtualbox-from-win7)  
 [How to stop and disable firewalld on Centos7](https://linuxize.com/post/how-to-stop-and-disable-firewalld-on-centos-7/)
+[Upgrade Postgresql from 11 to 13 on Centos-7](https://feriman.com/upgrade-postgresql-from-11-to-13-on-centos-7/)
+[How to install postgresql 14 centos rhel 7](https://computingforgeeks.com/how-to-install-postgresql-14-centos-rhel-7/)
+
 ## Important paths
 ```java
 /var/lib/pgsql/12/data/pg_hba.conf  
@@ -134,3 +137,46 @@ Removed symlink /etc/systemd/system/dbus-org.fedoraproject.FirewallD1.service.
 Created symlink from /etc/systemd/system/firewalld.service to /dev/null.
 [root@localhost dbuser]#
 ```
+
+# Upgrading postgres from 12 to 14
+If you already have PG12, then all preparational works should be done but otherwise check link [How to install postgresql 14 centos rhel 7](https://computingforgeeks.com/how-to-install-postgresql-14-centos-rhel-7/)  
+So we can continue, by installing the Postgres 14 and necessary packages
+```bash
+sudo yum install -y postgresql14-server postgresql14-contrib postgresql14-plpython3 postgresql14-pglogical postgresql14
+```
+After installation, database initialization is required before service can be started.  
+```
+[root@localhost dbuser]# sudo /usr/pgsql-14/bin/postgresql-14-setup initdb
+Initializing database ... OK
+```
+Stop Postgresql12 and check over
+```
+sudo systemctl stop postgresql-12
+sudo systemctl status postgresql-12
+```
+Now change user to postgres 
+```
+su - postgres
+cd
+```
+**Run preupgrade check**
+```
+/usr/pgsql-14/bin/pg_upgrade --old-bindir=/usr/pgsql-12/bin --new-bindir=/usr/pgsql-14/bin --old-datadir=/var/lib/pgsql/12/data --new-datadir=/var/lib/pgsql/14/data --user=postgres --link --check
+```
+**UPGRADE**
+```
+ /usr/pgsql-14/bin/pg_upgrade --old-bindir=/usr/pgsql-12/bin --new-bindir=/usr/pgsql-14/bin --old-datadir=/var/lib/pgsql/12/data --new-datadir=/var/lib/pgsql/14/data --user=postgres --link
+```
+TODO : Maybe config files needs to be adjusted.
+
+If you are done with these config files, restart the service and add autostart
+```
+systemctl restart postgresql-14
+systemctl enable postgresql-14
+```
+
+**Removing old version if upgrade is successful**
+At this point, you have to test your application. You need to restart your application (GitLab or whatever you use). If everything is working fine, let's continue by removing old packages and files:
+sudo yum remove postgresql11*
+rm -rf /var/lib/pgsql/12
+su - postgres -c "/var/lib/pgsql/delete_old_cluster.sh" 
