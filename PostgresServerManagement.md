@@ -8,7 +8,7 @@
 [How to install postgresql 14 centos rhel 7](https://computingforgeeks.com/how-to-install-postgresql-14-centos-rhel-7/)  
 
 ## Important paths
-```java
+```bash
 /var/lib/pgsql/12/data/pg_hba.conf  
 /var/lib/pgsql/12/data/postgresql.conf
 [postgres] /usr/pgsql-12/bin
@@ -140,6 +140,9 @@ Created symlink from /etc/systemd/system/firewalld.service to /dev/null.
 
 # Upgrading postgres from 12 to 14
 If you already have PG12, then all preparational works should be done but otherwise check link [How to install postgresql 14 centos rhel 7](https://computingforgeeks.com/how-to-install-postgresql-14-centos-rhel-7/)  
+Backup both PG12 
+`/var/lib/pgsql/12/data/pg_hba.conf` and `/var/lib/pgsql/12/data/postgresql.conf`
+
 So we can continue, by installing the Postgres 14 and necessary packages
 ```bash
 sudo yum install -y postgresql14-server postgresql14-contrib postgresql14-plpython3 postgresql14-pglogical postgresql14
@@ -167,7 +170,7 @@ cd
 ```
  /usr/pgsql-14/bin/pg_upgrade --old-bindir=/usr/pgsql-12/bin --new-bindir=/usr/pgsql-14/bin --old-datadir=/var/lib/pgsql/12/data --new-datadir=/var/lib/pgsql/14/data --user=postgres --link
 ```
-TODO : Maybe config files needs to be adjusted.
+
 
 If you are done with these config files, restart the service and add autostart
 ```
