@@ -3,9 +3,9 @@
 [Install CentOS on VirtualBox on Windows Host and Connect from PuTTY](https://medium.com/@jithz/install-centos-on-virtualbox-on-windows-host-and-connect-from-putty-d047afda2788)  
 [How to install PostgreSQL 12 on Centos 7](https://computingforgeeks.com/how-to-install-postgresql-12-on-centos-7/)  
 [Connect to postgresql database in linux virtualbox from Windows](https://stackoverflow.com/questions/18121666/connect-to-postgresql-database-in-linux-virtualbox-from-win7)  
-[How to stop and disable firewalld on Centos7](https://linuxize.com/post/how-to-stop-and-disable-firewalld-on-centos-7/)
-[Upgrade Postgresql from 11 to 13 on Centos-7](https://feriman.com/upgrade-postgresql-from-11-to-13-on-centos-7/)
-[How to install postgresql 14 centos rhel 7](https://computingforgeeks.com/how-to-install-postgresql-14-centos-rhel-7/)
+[How to stop and disable firewalld on Centos7](https://linuxize.com/post/how-to-stop-and-disable-firewalld-on-centos-7/)  
+[Upgrade Postgresql from 11 to 13 on Centos-7](https://feriman.com/upgrade-postgresql-from-11-to-13-on-centos-7/)  
+[How to install postgresql 14 centos rhel 7](https://computingforgeeks.com/how-to-install-postgresql-14-centos-rhel-7/)  
 
 ## Important paths
 ```java
