@@ -14,9 +14,10 @@
 [postgres] /usr/pgsql-12/bin
 ```
 ## Set up CentOS based VM in local machine
-Download the CentOS image, and set up the VM server.  
+Download the CentOS image, and set up the VM server. 
 Install the openssh server to be able to use putty. Makes thing easier.
 ```bash
+sudo yum -y update
 sudo yum –y install openssh-server openssh-clients
 ```
 Check the ip address  
