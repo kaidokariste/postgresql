@@ -1,6 +1,15 @@
 # Installing PostgreSQL 12 in CentOS 7
 ## References
+### Setting up VM
 [Install CentOS on VirtualBox on Windows Host and Connect from PuTTY](https://medium.com/@jithz/install-centos-on-virtualbox-on-windows-host-and-connect-from-putty-d047afda2788)  
+When your Host-Only Networkdriver does not come up, look comment about MAC address configuration.   
+[Host only network adapter enp0s8 not starting on boot in Centos7](https://unix.stackexchange.com/questions/270231/host-only-network-adapter-enp0s8-not-starting-on-boot-in-centos7)  
+> the Mac address in /etc/sysconfig/network-scripts/ifcfg-enp0s8 (HWADDR=xxxxxxxxxxxx) was different to that shown in the VirtualBox GUI (Centos7-> Settings-> Network > -> Adapter2 -> Advanced -> Mac address).
+```
+[root@localhost dbuser]# sudo vim /etc/sysconfig/network-scripts/ifcfg-enp0s8
+add line: HWADDR=xxxxxxxxxxx (number you got from VM adapter)
+```
+### Setting up Postgresql
 [How to install PostgreSQL 12 on Centos 7](https://computingforgeeks.com/how-to-install-postgresql-12-on-centos-7/)  
 [Connect to postgresql database in linux virtualbox from Windows](https://stackoverflow.com/questions/18121666/connect-to-postgresql-database-in-linux-virtualbox-from-win7)  
 [How to stop and disable firewalld on Centos7](https://linuxize.com/post/how-to-stop-and-disable-firewalld-on-centos-7/)  
