@@ -7,7 +7,7 @@ When your Host-Only Networkdriver does not come up, look comment about MAC addre
 > the Mac address in /etc/sysconfig/network-scripts/ifcfg-enp0s8 (HWADDR=xxxxxxxxxxxx) was different to that shown in the VirtualBox GUI (Centos7-> Settings-> Network > -> Adapter2 -> Advanced -> Mac address).
 ```
 [root@localhost dbuser]# sudo vim /etc/sysconfig/network-scripts/ifcfg-enp0s8
-add line: HWADDR=xxxxxxxxxxx (number you got from VM adapter)
+add line: HWADDR=xxxxxxxxxxx (number you got from VM adapter) and adjust BOOTPROTO=none
 ```
 ### Setting up Postgresql
 [How to install PostgreSQL 12 on Centos 7](https://computingforgeeks.com/how-to-install-postgresql-12-on-centos-7/)  
