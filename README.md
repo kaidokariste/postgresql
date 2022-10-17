@@ -24,6 +24,29 @@
 
 **Index** - schema object that contains an entry for each value that appears in the indexed column(s) of the table or cluster and provides direct, fast access to rows.
 
+# Database handling
+## PSQL
+`\l+` - list databases  
+`\c cycling` - connect database "cycling"  
+`\dn+` - list schemas  
+
+## Connecting to database
+1. Open Power Shell terminal
+2. Using CD command go to folder where psql.exe is istalled. For example: ```cd C:\Program Files\pgAdmin III\1.22>``` To get help ```.\psql.exe --help```
+3. Connect database: ```.\psql.exe -U myusername -d mydatabase -h mydbserver```
+
+## Connect database inside docker container
+```bash
+$ docker run -i -t <docker-image-code> /bin/bash
+$ service postgresql status
+$ service postgresql start
+$ ps aux
+$ su - postgres
+$ psql
+    postgres# \connect MyDatabase
+
+```
+
 # Handling Postgres logs
 
 Log into the server where postgres is running
@@ -43,24 +66,6 @@ sudo tail -f 100 /var/lib/postgresql/9.6/main/pg_log/postgresql-2019-09-06_00000
 **Search specific words from postgres file**
 ```
 sudo grep 'starting\|finished' /var/lib/postgresql/9.6/main/pg_log/postgresql-2019-09-05_100807.log
-```
-
-# Database handling
-## Connecting to database
-1. Open Power Shell terminal
-2. Using CD command go to folder where psql.exe is istalled. For example: ```cd C:\Program Files\pgAdmin III\1.22>``` To get help ```.\psql.exe --help```
-3. Connect database: ```.\psql.exe -U myusername -d mydatabase -h mydbserver```
-
-## Connect database inside docker container
-```bash
-$ docker run -i -t <docker-image-code> /bin/bash
-$ service postgresql status
-$ service postgresql start
-$ ps aux
-$ su - postgres
-$ psql
-    postgres# \connect MyDatabase
-
 ```
 
 ## Looking database parameters
