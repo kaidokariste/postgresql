@@ -29,6 +29,7 @@
 `\l+` - list databases  
 `\c cycling` - connect database "cycling"  
 `\dn+` - list schemas  
+`\dt uci.*` - list all tables under schema UCI
 
 ## Connecting to database
 1. Open Power Shell terminal
