@@ -339,7 +339,7 @@ WHERE r.rolname !~ '^pg_'
 ORDER BY 1;
 ```
 
-## Look access right to view/table
+## Look access right to view/table and table owner
 ```
 select
     coalesce(nullif(s[1], ''), 'public') as grantee,
@@ -351,6 +351,9 @@ from
     unnest(coalesce(relacl::text[], format('{%s=arwdDxt/%s}', rolname, rolname)::text[])) acl,
     regexp_split_to_array(acl, '=|/') s
 where relname = 'myView';
+
+select * from pg_tables
+where tablename = 'tablename'
 ```
 
 ## Creating and maintaining user
