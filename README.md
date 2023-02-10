@@ -54,7 +54,7 @@ Log into the server where postgres is running
 
 **Get the latest log filename**
 ```
-sudo ls -lah /var/lib/postgresql/9.6/main/pg_log
+sudo ls -lah /var/lib/postgresql/14/data/pg_log
 ```
 **Get last 200 rows from the latest log**
 -n - number of rows at the end
@@ -62,6 +62,12 @@ sudo ls -lah /var/lib/postgresql/9.6/main/pg_log
 ```
 sudo tail -n 200 /var/lib/postgresql/9.6/main/pg_log/postgresql-2018-08-14_000000.log 
 sudo tail -f 100 /var/lib/postgresql/9.6/main/pg_log/postgresql-2019-09-06_000000.log
+```
+
+```
+/var/lib/postgresql/14/data/pg_log
+# Grep specific string
+-bash-4.2$ grep "2023-02-10 10:59:*" postgresql-2023-02-10_000000.log
 ```
 
 **Search specific words from postgres file**
