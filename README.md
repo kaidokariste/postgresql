@@ -25,11 +25,13 @@
 **Index** - schema object that contains an entry for each value that appears in the indexed column(s) of the table or cluster and provides direct, fast access to rows.
 
 # Database handling
+
 ## PSQL
 `\l+` - list databases  
 `\c cycling` - connect database "cycling"  
 `\dn+` - list schemas  
-`\dt uci.*` - list all tables under schema UCI
+`\dt uci.*` - list all tables under schema UCI  
+`systemctl start|stop|restart|status postgresql-14.service` - Systemctl status.
 
 ## Connecting to database
 1. Open Power Shell terminal
