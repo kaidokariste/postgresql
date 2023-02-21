@@ -25,11 +25,13 @@
 **Index** - schema object that contains an entry for each value that appears in the indexed column(s) of the table or cluster and provides direct, fast access to rows.
 
 # Database handling
+
 ## PSQL
 `\l+` - list databases  
 `\c cycling` - connect database "cycling"  
 `\dn+` - list schemas  
-`\dt uci.*` - list all tables under schema UCI
+`\dt uci.*` - list all tables under schema UCI  
+`systemctl start|stop|restart|status postgresql-14.service` - Systemctl status.
 
 ## Connecting to database
 1. Open Power Shell terminal
@@ -54,7 +56,7 @@ Log into the server where postgres is running
 
 **Get the latest log filename**
 ```
-sudo ls -lah /var/lib/postgresql/9.6/main/pg_log
+sudo ls -lah /var/lib/postgresql/14/data/pg_log
 ```
 **Get last 200 rows from the latest log**
 -n - number of rows at the end
@@ -62,6 +64,12 @@ sudo ls -lah /var/lib/postgresql/9.6/main/pg_log
 ```
 sudo tail -n 200 /var/lib/postgresql/9.6/main/pg_log/postgresql-2018-08-14_000000.log 
 sudo tail -f 100 /var/lib/postgresql/9.6/main/pg_log/postgresql-2019-09-06_000000.log
+```
+
+```
+/var/lib/postgresql/14/data/pg_log
+# Grep specific string
+-bash-4.2$ grep "2023-02-10 10:59:*" postgresql-2023-02-10_000000.log
 ```
 
 **Search specific words from postgres file**
@@ -339,7 +347,7 @@ WHERE r.rolname !~ '^pg_'
 ORDER BY 1;
 ```
 
-## Look access right to view/table
+## Look access right to view/table and table owner
 ```
 select
     coalesce(nullif(s[1], ''), 'public') as grantee,
@@ -351,6 +359,9 @@ from
     unnest(coalesce(relacl::text[], format('{%s=arwdDxt/%s}', rolname, rolname)::text[])) acl,
     regexp_split_to_array(acl, '=|/') s
 where relname = 'myView';
+
+select * from pg_tables
+where tablename = 'tablename'
 ```
 
 ## Creating and maintaining user

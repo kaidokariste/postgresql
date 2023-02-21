@@ -1,4 +1,30 @@
-﻿-- After postgres 10, partitioning become more native. Lets look the same example.
+-- Example of range partitioning
+-- Create logging table and partitions
+CREATE TABLE economics.logging
+(
+    id           BIGSERIAL,
+    loginfo      TEXT,
+    insert_dtime TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
+    PRIMARY KEY (id, insert_dtime) -- !! To make it work then primary key must contain also the partition columns.
+) PARTITION BY RANGE (insert_dtime);
+
+-- Create default partition
+CREATE TABLE economics.logging_default PARTITION OF economics.logging DEFAULT;
+
+-- Create couple of range partitions
+CREATE TABLE economics.measurement_y2023m02 PARTITION OF economics.logging
+    FOR VALUES FROM ('2023-02-01') TO ('2023-03-01');
+
+CREATE TABLE economics.measurement_y2023m03 PARTITION OF economics.logging
+    FOR VALUES FROM ('2023-03-01') TO ('2023-04-01');
+
+CREATE TABLE economics.measurement_y2023m04 PARTITION OF economics.logging
+    FOR VALUES FROM ('2023-04-01') TO ('2023-05-01');
+
+CREATE TABLE economics.measurement_y2023m05 PARTITION OF economics.logging
+    FOR VALUES FROM ('2023-05-01') TO ('2023-06-01'); 
+
+-- After postgres 10, partitioning become more native. Lets look the same example.
 -- Most popular are range partition and list partition. Range partition is used
 -- mostly for dates. List is used for partitioning by common value (like in example)
 
