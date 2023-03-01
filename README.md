@@ -419,6 +419,20 @@ SHOW hba_file; -- shows path of hba file
 SELECT pg_reload_conf(); -- reload conf file after changes
 ```
 
+```sql
+-- replica identity
+-- https://www.postgresql.org/docs/current/sql-altertable.html#SQL-ALTERTABLE-REPLICA-IDENTITY
+create temporary table rep as
+SELECT oid::regclass::text,
+      CASE relreplident
+          WHEN 'd' THEN 'default'
+          WHEN 'n' THEN 'nothing'
+          WHEN 'f' THEN 'full'
+          WHEN 'i' THEN 'index'
+       END AS replica_identity
+FROM pg_class;
+```
+
 # Optimization
 
 You can use the **EXPLAIN** command to see what query plan the planner creates for any query. Plan-reading is an art that 
