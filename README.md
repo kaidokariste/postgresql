@@ -432,6 +432,34 @@ SELECT oid::regclass::text,
        END AS replica_identity
 FROM pg_class;
 ```
+# Logging levels
+Possible levels with RAISE are **DEBUG, LOG, NOTICE, WARNING, INFO and EXCEPTION**. EXCEPTION raises an error (which normally aborts the current transaction). INFO is passed always to STDOUT, despite the level. The other levels only generate messages of different priority levels. The higher the level, the less it shows. Example if you set log level WARNING, then DEBUG, LOG and NOTICE levels are not shown in console (STDOUT). 
+
+client_min_messages(string): Controls which message levels are sent to the client STDOUT.
+```sql
+show client_min_messages;
+
+client_min_messages
+------------------------------
+notice
+(1 row)
+```
+
+log_min_messages(string): Controls which message levels are written to the server log.
+```sql
+show log_min_messages;
+
+log_min_messages
+------------------------------
+warning
+(1 row)
+```
+## Changing for session
+```sql
+show client_min_messages;
+set client_min_messages = debug;
+```
+
 
 # Optimization
 
