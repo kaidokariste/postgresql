@@ -298,6 +298,15 @@ with recursive inhh(poid, seqn, ordn) as (
    where cl.oid = inhh.poid and n.oid = cl.relnamespace;
 ```
 
+```sql
+SELECT inhparent::regclass::TEXT, COUNT(*) AS partitions
+FROM pg_catalog.pg_inherits
+WHERE inhparent::REGCLASS::TEXT NOT LIKE '%idx%'
+  AND inhparent::REGCLASS::TEXT NOT LIKE '%pkey%'
+  AND inhparent::REGCLASS::TEXT NOT LIKE '%index%'
+GROUP BY inhparent
+```
+
  ## Look function description and code
 ```sql
 SELECT
