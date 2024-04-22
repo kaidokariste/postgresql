@@ -444,6 +444,14 @@ SELECT oid::regclass::text,
        END AS replica_identity
 FROM pg_class;
 ```
+
+Look tables in replication set  
+```sql
+select *
+from pglogical.replication_set rs
+join pglogical.replication_set_table rst using (set_id)
+where set_name like '%myset%'
+```
 # Logging levels
 Possible levels with RAISE are **DEBUG, LOG, NOTICE, WARNING, INFO and EXCEPTION**. EXCEPTION raises an error (which normally aborts the current transaction). INFO is passed always to STDOUT, despite the level. The other levels only generate messages of different priority levels. The higher the level, the less it shows. Example if you set log level WARNING, then DEBUG, LOG and NOTICE levels are not shown in console (STDOUT). 
 
