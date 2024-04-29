@@ -187,6 +187,15 @@ FROM information_schema.tables
 WHERE table_type = 'FOREIGN TABLE'
 ```
 
+## Foreign table owners
+```sql
+SELECT
+  oid::regclass,
+  pg_get_userbyid(relowner)
+FROM pg_class
+WHERE relkind = 'f';
+```
+
 ## Foreign server information lookup  
 ```sql
 SELECT srvname, srvoptions, um.*,rolname
