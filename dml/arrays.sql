@@ -85,3 +85,5 @@ SELECT *
 FROM "kaido.kariste".my_array_table
 WHERE 'Apple' = ANY (text_array_two_dim); -- searching from two dimensional array works the same
 
+-- Array overlap, if you need to check if one array contains in another
+SELECT ARRAY[1,2] && ARRAY[1,3,4,7]; -- tru
