@@ -36,7 +36,11 @@
 ## Connecting to database
 1. Open Power Shell terminal
 2. Using CD command go to folder where psql.exe is istalled. For example: ```cd C:\Program Files\pgAdmin III\1.22>``` To get help ```.\psql.exe --help```
-3. Connect database: ```.\psql.exe -U myusername -d mydatabase -h mydbserver```
+3. Connect database: ```.\psql.exe -U myusername -d mydatabase -h mydbserver```  
+Example call for procedure  
+```psql -U myusername -d mydatabase -h myserver -c "CALL \"kaido.kariste\".insert_something(table:='public.some_table', chunk_size := 250000, collection_time := '1440 minutes');"```
+
+
 
 ## Connect database inside docker container
 ```bash
