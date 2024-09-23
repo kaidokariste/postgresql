@@ -305,7 +305,7 @@ JOIN pg_namespace nmsp_parent
   ON nmsp_parent.oid  = parent.relnamespace
 JOIN pg_namespace nmsp_child
   ON nmsp_child.oid   = child.relnamespace
-WHERE parent.relname='dm_p_payment';
+WHERE parent.relname ilike '%my_table%';
 ```
 
 ```sql
