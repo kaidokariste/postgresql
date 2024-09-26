@@ -108,3 +108,21 @@ SELECT * FROM myschema.premium_liiga_club;
 
 -- drop table myschema.premium_liiga_club cascade;
 
+-- Create empty parent table and attach partition.
+-- Create a parent table partitioned by a list of values
+CREATE TABLE products (
+    product_id serial PRIMARY KEY,
+    product_name text,
+    category text
+) PARTITION BY LIST (category);
+
+-- Create the child partition table
+CREATE TABLE products_electronics (
+    LIKE products INCLUDING ALL
+);
+
+-- Attach the child table as a partition
+ALTER TABLE products
+ATTACH PARTITION products_electronics FOR VALUES IN ('Electronics');
+
+
