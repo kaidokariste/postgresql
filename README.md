@@ -439,6 +439,17 @@ Create new user with login option
 CREATE USER myUser WITH LOGIN
 ```
 
+List all schemas and owners
+```sql
+SELECT
+  n.nspname AS schema_name,
+  pg_catalog.PG_GET_USERBYID(n.nspowner) AS schema_owner
+FROM pg_catalog.pg_namespace n
+WHERE n.nspname NOT IN ('pg_catalog', 'information_schema')
+and nspname not ilike 'pg%'
+ORDER BY schema_name;
+```
+
 Create schema for a user
 ```sql
 CREATE SCHEMA "my.username"  AUTHORIZATION "my.surname";
